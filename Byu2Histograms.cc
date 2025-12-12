@@ -75,15 +75,7 @@ void Byu2Histograms::bookHistograms(int seedIndex, int skimIndex)
 
 void Byu2Histograms::fillSinglesHistograms(PositronData& entry, double frRandomization, double vwRandomization, int seedIndex, int skimIndex)
 {
-    /*
-    fillSinglesHistograms는 positron cluster (entry) 에 대해 for문을 이용하여 EvsT_ 히스토그램에 fill을 해주는 함수이다. (반복문은 HistogramBase.hh에 이미 할당되었다)
-    1. 처음에 prev_subrunIndexS_ 이 constructor에서 0으로 initialization이 되어 있기 때문에 if문에 들어가지 않고, 바로 EvsT에 첫 cluster (entry)가 fill이 된다.
-    2. 이후 첫번째 prev_subrunIndex에 해당 entry의 subrunIndex가 assign이 된 후 다시 if문으로 가지만, entry.subrunIndex와 prev_subrunIndex가 같기에 if문으로 들어가지지 않는다.
-    3. 결국 하나의 subrunIndex에 있는 모든 cluster들의 fill이 다 끝날때까지 if문으로 들어가지지 않고, 그 다음 subrunIndex가 prev_subrunIndex로 assign이 된 후에 if문으로 들어가진다.
-    4. 즉, 동일한 subrunIndex를 가지고 있는 모든 entry들에 대해서 EvsT_에 fill을 다하고 다시 다음 subrunIndex가 되었을 때 if문으로 들어가지게 된다.
-    5. if문에 들어오면, 하나의 subrunIndex에 대하여 모든 entry들에 대해 fill이 된 EvsT_ 2F 히소토그램이 Tree에 fill이되고 동시에 prev_subrunIndex도 Tree에 fill이 되며, EvsT_은 Reset이 된다. 
-    그 다음부터는 위의 logic을 반복하며 동일한 subrunIndex를 갖는 모든 cluster들에 대해 EvsT_ 2F 히스토그램에 fill이 되고 이런 EvsT_히스토그램은 subrun의 개수만큼 Tree에 fill이 된다. 
-    */
+
     
     // Call energy and time for each entry
     double energy = entry.energy;
@@ -125,15 +117,6 @@ void Byu2Histograms::fillSinglesHistograms(PositronData& entry, double frRandomi
 
 void Byu2Histograms::fillDoublesHistograms(PileupData& entry, double frRandomization, double vwRandomization, int seedIndex, int skimIndex)
 {
-        /*
-        fillDoubleHistograms는 double pileup cluster (entry) 에 대해 for 문을 이용하여 EvsT_D_ 히스토그램에 fill을 해주는 함수이다. (반복문은 HistogramBase.hh에 이미 할당되었다)
-        유의할 점은, fillsinglesHistogram과는 다르게, entry 하나가 positron 한 개 가 아니라 pileup reconstruction의 묶음에 해당된다. 이 묶음은 pilupIndex가 0,1,2로 되어 있다.
-        이 묶음은 pilupIndex가 0,1,2로 되어 있다. 0과 1이 아주 짧은 시간 동안에 동시에 검출된 positron에 해당되고, 2는 이들을 하나로 취급했을 때의 double pileup에 해당된다.
-        1. 각 entry마다 (0,1,2) 3개의 index에 대한 정보를 갖는 pileup reconstruction 1묶음이 대응된다. (종종 index가 2인 녀석이 1개 이상이라서 0과 1이 각각 n개씩 포함된 묶음도 있다.)
-        2. 그러므로 for문을 통해서 각 묶음에 대한 정보를 불러와서 적합한 weight를 주어 EvsT_D_에 fill을 한다. 
-        3. 1번과 2번의 과정이 잘 이해가 되었다면, fillsinglesHistogram에서 한 것 처럼 subrunIndex가 바뀔 때 마다 Tree에 Fill을 해주는 if문을 for문 보다 먼저 위치시킨다.
-        */
-
 
     // Fill EvsT histogram, runIndex, and subrunIndex branches in this if statement 
     if ((entry.runIndex != prev_runIndexD_ || entry.subrunIndex != prev_subrunIndexD_) && prev_subrunIndexD_ != -1) {
